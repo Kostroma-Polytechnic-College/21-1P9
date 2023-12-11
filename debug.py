@@ -1,23 +1,29 @@
-import pandas as pd
+from yaml import Loader, load
 
-remains_sheet = pd.read_excel(
-    io='file.xlsx', 
-    sheet_name='Остатки')
-# print(remains_sheet)
+MENU = load(open('navigation.yml', 'r', encoding='utf-8'), Loader=Loader)
 
-discipline_sheet = pd.read_excel(
-    io='file.xlsx', 
-    sheet_name='Дисиплина')
-# print(discipline_sheet)
+pass
 
-teacher_sheet = pd.read_excel(
-    io='file.xlsx', 
-    sheet_name='Преподаватель')
-# print(teacher_sheet)
+# import pandas as pd
 
-group_sheet = pd.read_excel(
-    io='file.xlsx', 
-    sheet_name='Группа')
-# print(group_sheet)
+# remains_sheet = pd.read_excel(
+#     io='file.xlsx', 
+#     sheet_name='Остатки')
+# # print(remains_sheet)
 
-schedule = {}
+# discipline_sheet = pd.read_excel(
+#     io='file.xlsx', 
+#     sheet_name='Дисиплина')
+# # print(discipline_sheet)
+
+# teacher_sheet = pd.read_excel(
+#     io='file.xlsx', 
+#     sheet_name='Преподаватель')
+# # print(teacher_sheet)
+
+# group_sheet = pd.read_excel(
+#     io='file.xlsx', 
+#     sheet_name='Группа')
+# # print(group_sheet)
+
+# schedule = {}

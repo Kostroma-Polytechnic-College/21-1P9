@@ -2,12 +2,16 @@ import asyncio
 from aiogram import Bot, Dispatcher, executor
 from aiogram.types import Message,KeyboardButton, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, BotCommand, ReplyKeyboardMarkup
 from secret import TELEGRAM_TOKEN as token
+import navigation as nav
 
 
 bot = Bot(token=token)
 loop = asyncio.get_event_loop()
 dp = Dispatcher(bot, loop=loop)
 
+@dp.message_handler(commands=["start"])
+async def command_start_handler(message: Message):
+    await main_menu(message.from_user.id)
 
 @dp.message_handler(content_types=['document'])
 async def document(message):
@@ -16,19 +20,15 @@ async def document(message):
 
 @dp.message_handler()
 async def messages(message: Message):
-    await bot.set_my_commands([
-        BotCommand(command="/start", description="1"),
-        BotCommand(command="/stop", description="2"),
-        BotCommand(command="/help", description="3")])
-    await bot.send_message(
-        chat_id=message.from_user.id,
-        text=f"Сам {message.text}",
-        reply_markup=ReplyKeyboardMarkup(
-            keyboard=[
-                [KeyboardButton(text="111"),
-                 KeyboardButton(text="222")]])
-    )
+    pass
 
+
+async def main_menu(chat_id):
+    text, reply_markup = nav.get_reply_message({'new_state':1})
+    await bot.send_message(
+        chat_id=chat_id,
+        text=text,
+        reply_markup=reply_markup)
 
 @dp.callback_query_handler(lambda callback_query: callback_query.data)
 async def callback_query(callback_query: CallbackQuery):
@@ -37,13 +37,22 @@ async def callback_query(callback_query: CallbackQuery):
     except Exception:
         pass
 
-    await bot.send_message(
-        chat_id=callback_query.from_user.id,
-        text=callback_query.data,
-        reply_markup=InlineKeyboardMarkup(
-            inline_keyboard=[[InlineKeyboardButton(text="-1-", callback_data=callback_query.data+"1")],[ 
-                             InlineKeyboardButton(text="-2-", callback_data=callback_query.data+"2")]])
-    )
+    context = eval(callback_query.data)
+
+    if context['new_state'] == 1:
+        await main_menu(callback_query.from_user.id)
+    elif context['new_state'] == 11:
+        text, reply_markup = nav.get_reply_message(context)
+        await bot.send_message(
+            chat_id=callback_query.from_user.id,
+            text=text,
+            reply_markup=reply_markup)
+    elif context['new_state'] == 12:
+        text, reply_markup = nav.get_reply_message(context)
+        await bot.send_message(
+            chat_id=callback_query.from_user.id,
+            text=text,
+            reply_markup=reply_markup)
 
 
 if __name__ == '__main__':
