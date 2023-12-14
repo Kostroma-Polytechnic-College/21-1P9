@@ -1,6 +1,6 @@
 import asyncio
 from aiogram import Bot, Dispatcher, executor
-from aiogram.types import Message,KeyboardButton, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, BotCommand, ReplyKeyboardMarkup
+from aiogram.types import Message, KeyboardButton, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, BotCommand, ReplyKeyboardMarkup
 from secret import TELEGRAM_TOKEN as token
 import navigation as nav
 

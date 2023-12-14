@@ -3,3 +3,4 @@ PyYAML==6.0
 peewee==3.16.2
 pandas
 openpyxl
+django
