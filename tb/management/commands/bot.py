@@ -1,9 +1,12 @@
 import asyncio
+import re
 from aiogram import Bot, Dispatcher, executor
 from aiogram.types import Message, KeyboardButton, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, BotCommand, ReplyKeyboardMarkup
 from .secret import TELEGRAM_TOKEN as token
 from . import navigation as nav
 from django.core.management.base import BaseCommand
+from asgiref.sync import sync_to_async
+from tb.models import TelegramUser as TUser
 
 class Command(BaseCommand):
     help = "Телеграмм бот"
@@ -58,5 +61,13 @@ class Command(BaseCommand):
                     text=text,
                     reply_markup=reply_markup)
 
-        executor.start_polling(dispatcher=dp)
+        @sync_to_async
+        def get_admin():
+            return TUser.objects.get(is_admin=True)
+
+        async def send_admin(dp):
+            admin = await get_admin()
+            await bot.send_message(admin.external_id, "Бот запущен!")
+
+        executor.start_polling(dispatcher=dp, on_startup=send_admin)
     

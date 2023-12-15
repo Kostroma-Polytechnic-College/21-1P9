@@ -16,7 +16,7 @@ def get_static_buttons(context: dict):
     for button_text, params in MENU[state]["static_buttons"].items():
         callback_data = {'new_state': params['new_state']}
         buttons.append(InlineKeyboardButton(
-            text=button_text,
+            text=button_text, 
             callback_data=str(callback_data)))
     
     return buttons
